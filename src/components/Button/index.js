@@ -1,14 +1,17 @@
 // Importações (libs, componentes, css, estilização)
 import "./styles.css";
 
-function Button({ text }) {
+function Button({ text, children }) {
   // Javascript (Lógica do nosso componente)
 
   return (
-    <button className="container">
-      {/** JSX */}
-      {text}
-    </button>
+    <div>
+      <button className="button-container">
+        {/** JSX */}
+        {children}
+      </button>
+      <span>{text}</span>
+    </div>
   );
 }
 
