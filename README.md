@@ -1,3 +1,3 @@
-## States e eventos de usuário
+## Renderização condicional
 
-Aprendemos a como utilizar os states e capturar eventos de usuário. Entendemos sua imutabilidade e suas características únicas!
+Aprendemos a como renderizar de maneira condicional elementos em tela com o operador ternário e como fazer filtros em listas + elementos JSX.
