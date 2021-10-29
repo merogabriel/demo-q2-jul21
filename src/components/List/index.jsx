@@ -1,10 +1,33 @@
-export const List = ({ list }) => (
-  <ul>
-    {list.map((name, index) => (
-      <li key={index}>{name}</li>
-    ))}
-  </ul>
-);
+const List = ({ countryList }) => {
+  // Em condições aninhadas, tratar os dados antes
+  // const filteredCountries = countryList.filter();
 
-// Com retorno implicito, 
-// não podemos ter states ou lógica dentro do nosso componente, apenas exibição. Esse componente apenas exibe
+  return (
+    <>
+      <h2>Países com mais 50 milhões de habitantes</h2>
+      {/* <ul>
+        {countryList.map((item) => (
+          <>
+            {item.population >= 5000000 && (
+              <li key={item.country}>
+                País: {item.country} - População: {item.population}
+              </li>
+            )}
+          </>
+        ))}
+      </ul> */}
+
+      <ul>
+        {countryList
+          .filter((item) => item.population >= 5000000)
+          .map((item) => (
+            <li key={item.country}>
+              País: {item.country} - População: {item.population}
+            </li>
+          ))}
+      </ul>
+    </>
+  );
+};
+
+export default List;

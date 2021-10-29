@@ -1,52 +1,36 @@
 import { useState } from "react";
-
+import { AiTwotoneBulb, AiOutlineBulb } from "react-icons/ai";
 import Button from "./components/Button";
-import Input from "./components/Input";
-import { List } from "./components/List";
+import Form from "./components/Form";
+import List from "./components/List";
 
 import "./app.css";
 
 function App() {
-  const [count, setCount] = useState(0);
-  const [name, setName] = useState("");
-  const [listNames, setListNames] = useState([]);
+  const [isOn, setIsOn] = useState(true);
+  const [countryList, setCountryList] = useState([]);
 
-  function add() {
-    setCount(count + 1);
-  }
+  const handleLight = () => {
+    // true
+    setIsOn(!isOn);
+  };
 
-  function sub() {
-    setCount(count - 1);
-  }
-
-  function addName() {
-    if (name === "") {
-      return;
-    }
-
-    setListNames([...listNames, name]);
-  }
-
-  console.log(name);
-
-  // Two way data binding - Angular
+  const handleCountries = (country) => {
+    setCountryList([...countryList, country]);
+  };
 
   return (
     <div className="App">
       <header className="App-header">
-        <h2>Contagem atual: {count}</h2>
+        <AiTwotoneBulb size={50} color={isOn ? "yellow" : "gray"} />
 
-        <Button onClick={add}>Aumentar</Button>
-        <Button onClick={sub}>Diminuir</Button>
+        <Button onClick={handleLight} blueButton={isOn}>
+          {isOn ? "Apagar" : "Acender"} a lâmpada
+        </Button>
 
-        <Input
-          placeholder="Digite um nome"
-          onChange={(event) => setName(event.target.value)}
-        />
+        <Form handleCountries={handleCountries} />
 
-        <Button onClick={addName}>Adicionar nome</Button>
-
-        <List list={listNames} />
+        <List countryList={countryList} />
       </header>
     </div>
   );
