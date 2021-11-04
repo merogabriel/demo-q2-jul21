@@ -1,36 +1,39 @@
 import { useState, useEffect } from "react";
 import Card from "./components/Card";
+import Counter from "./components/Counter";
+
 import "./app.css";
 
 function App() {
   const [loading, setLoading] = useState(true);
-  const [rockets, setRockets] = useState([]);
-  const [count, setCount] = useState(0);
+  const [groups, setGroups] = useState([]);
+  const [count, setCount] = useState(51);
+
+  const [error, setError] = useState(false);
+
+  const [isVisible, setVisible] = useState(true);
 
   useEffect(() => {
-    console.log("Montou");
     // Requisições são Promises
-    fetch("https://api.spacexdata.com/v4/rockets")
+    fetch(`https://kenzie-habits.herokuapp.com/groups/?page=${count}`)
       .then((response) => response.json())
       .then((response) => {
-        // Dentro do corpo .then, pode-se tratar os dados da maneira que bem entender
+        setGroups(response.results);
 
-        const newRockets = response.map((rocket) => ({
-          ...rocket,
-          novaChave: "Hello",
-        }));
-
-        setRockets(newRockets);
         setLoading(false);
       })
-      .catch((err) => console.log(err));
-  }, []);
-
-  useEffect(() => {
-    if (count > 0) {
-      console.log("Atualizou", count);
-    }
+      .catch((err) => {
+        setError(true);
+      });
   }, [count]);
+
+  if (error) {
+    return (
+      <div>
+        <h1>Ocorreu algum erro</h1>
+      </div>
+    );
+  }
 
   return (
     <div className="App">
@@ -38,15 +41,20 @@ function App() {
         {loading ? (
           <div> Carregando... </div>
         ) : (
-          rockets.map((rocket) => (
-            <Card key={rocket.id} name={rocket.name} company={rocket.company} />
+          groups.map((group) => (
+            <Card
+              key={group.id}
+              name={group.name}
+              description={group.description}
+            />
           ))
         )}
 
-        <div>Contagem atual {count} </div>
+        {isVisible && <Counter count={count} setCount={setCount} />}
 
-        <button onClick={() => setCount(count + 1)}>Aumentar contagem</button>
-        <button onClick={() => setCount(count - 1)}>Diminuir contagem</button>
+        <button onClick={() => setVisible(!isVisible)}>
+          Esconder o counter
+        </button>
       </header>
     </div>
   );

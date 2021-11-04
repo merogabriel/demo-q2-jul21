@@ -1,9 +1,9 @@
-const Card = ({ name, company }) => {
+const Card = ({ name, description }) => {
   return (
     <div>
-      Nome do foguete: {name}
+      Nome do grupo: {name}
       {" "} - 
-      Empresa: {company}
+      Descrição: {description}
     </div>
   )
 }
