@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
-export const ListContainer = styled.ul`
+export const Form = styled.form`
   display: flex;
   flex-direction: column;
-  border: 1px solid #000;
 `;

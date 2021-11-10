@@ -1,12 +1,12 @@
-import { Link } from 'react-router-dom'
+import { Link } from "react-router-dom";
+import LayoutContainer from "../../components/LayoutContainer";
 
 const Login = () => {
   return (
-    <div className="App">
-      <header className="App-header">Login aaa
-       <Link to="/"> Ir para a home </Link>
-      </header>
-    </div>
+    <LayoutContainer>
+      Login aaa
+      <Link to="/"> Ir para a home </Link>
+    </LayoutContainer>
   );
 };
 

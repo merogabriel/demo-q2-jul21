@@ -1,20 +1,24 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import LayoutContainer from "../../components/LayoutContainer";
 
 import { ListContainer } from './styles'
+
+
+import api from '../../services/api'
 
 const Users = () => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    fetch("https://kenziehub.herokuapp.com/users")
-      .then((response) => response.json())
-      .then((response) => setUsers(response));
+    // fetch('')
+
+    api.get("/users")
+      .then((response) => setUsers(response.data));
   }, []);
 
   return (
-    <div className="App">
-      <header className="App-header">
+    <LayoutContainer>
         Listagem de usuários
         <ListContainer>
           {users.map((user) => (
@@ -25,8 +29,7 @@ const Users = () => {
             </Link>
           ))}
         </ListContainer>
-      </header>
-    </div>
+     </LayoutContainer>
   );
 };
 

@@ -1,25 +1,23 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import LayoutContainer from "../../components/LayoutContainer";
+import api from "../../services/api";
 
 const Profile = () => {
-  const [user, setUser] = useState({})
-  const { id } = useParams()
-  
+  const [user, setUser] = useState({});
+  const { id } = useParams();
 
   useEffect(() => {
-    fetch(`https://kenziehub.herokuapp.com/users/${id}`)
-      .then((response) => response.json())
-      .then((response) => setUser(response));
-  }, [])
+    api.get(`/users/${id}`)
+      .then((response) => setUser(response.data));
+  }, []);
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <h2>{user.name}</h2>
+    <LayoutContainer>
+      <h2>{user.name}</h2>
 
-        <h3> {user.bio} </h3>
-      </header>
-    </div>
+      <h3> {user.bio} </h3>
+    </LayoutContainer>
   );
 };
 
