@@ -2,16 +2,25 @@ import { useForm } from "react-hook-form";
 import LayoutContainer from "../../components/LayoutContainer";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useHistory } from 'react-router-dom'
-
+import { useHistory } from "react-router-dom";
+import { toast } from "react-hot-toast";
 import { Form } from "./styles";
 import api from "../../services/api";
 
-const Signup = () => {
+import Input from "../../components/Input";
+
+const Signup = ({ setUser }) => {
   const schema = yup.object().shape({
     name: yup.string().required("Campo obrigatório"),
     email: yup.string().email("Email inválido").required("Campo obrigatório"),
-    password: yup.string().required("Campo obrigatório"),
+    password: yup
+      .string()
+      .min(6, "Minímo 6 digítos")
+      .required("Campo obrigatório"),
+    /*.matches(
+        /^((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
+        "Senha deve conter uma letra maiúscula, minúscula, números e caracter especial"
+      ),*/
     confirm_password: yup
       .string()
       .oneOf([yup.ref("password")], "Senhas diferentes")
@@ -19,55 +28,93 @@ const Signup = () => {
     bio: yup.string().required("Campo obrigatório"),
     contact: yup.string().required("Campo obrigatório"),
     course_module: yup.string().required("Campo obrigatório"),
+    // acceptTerms: yup.bool().oneOf([true], "Campo obrigatório"),
   });
 
-  const { register, handleSubmit, formState: { errors } } = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({
     resolver: yupResolver(schema),
   });
 
-  const history = useHistory()
+  const history = useHistory();
 
   const handleSubmitNosso = (data) => {
     // fazer a requisição com os dados recebidos api.post("/users", data).then, e no .then() usar um history.push()
     // ou seja = requisição deu certo, envia o usuario para outra pagina.
+
+    delete data.confirm_password;
+
     api
       .post("/users", data)
       .then((response) => {
-        console.log(response.data);
+        toast.success("Usuário cadastrado com sucesso");
+        reset(); // limpa os campos
 
-        history.push("/login")
+        setUser(response.data);
+        history.push("/login");
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        toast.error("Email duplicado, tente com outro email");
+      });
   };
+
+  const options = ["1 modulo", "2 Modulo", "3 Modulo", "4 Modulo"];
 
   return (
     <LayoutContainer>
       Signup
       <Form onSubmit={handleSubmit(handleSubmitNosso)}>
-        <input placeholder="Seu nome" {...register("name")} />
-        <p> {errors.name?.message} </p>
-        <input placeholder="Email" type="email" {...register("email")} />
-        <p> {errors.email?.message} </p>
-        <input placeholder="Senha" type="password" {...register("password")} />
-        <p> {errors.password?.message} </p>
-        <input
-          placeholder="Confirmar senha"
+        <Input
+          placeholder="Seu nome"
+          register={register}
+          name="name"
+          error={errors.name?.message}
+        />
+        <Input
+          placeholder="Seu email"
+          register={register}
+          name="email"
+          error={errors.email?.message}
+        />
+        <Input
+          placeholder="Senha"
+          register={register}
+          name="password"
           type="password"
-          {...register("confirm_password")}
+          error={errors.password?.message}
         />
-        <p> {errors.confirm_password?.message} </p>
-        <input
-          placeholder="Descreva um pouco de si mesmo"
-          {...register("bio")}
+        <Input
+          placeholder="Confirme sua senha"
+          register={register}
+          type="password"
+          name="confirm_password"
+          error={errors.confirm_password?.message}
         />
-        <p> {errors.bio?.message} </p>
-        <input
-          placeholder="Contato (linkedin, telefone etc)"
-          {...register("contact")}
+
+        <Input
+          placeholder="Diga um pouco sobre vc"
+          register={register}
+          name="bio"
+          error={errors.bio?.message}
         />
-        <p> {errors.contact?.message} </p>
-        <input placeholder="Módulo do curso" {...register("course_module")} />
-        <p> {errors.course_module?.message} </p>
+        <Input
+          placeholder="Seu nome"
+          register={register}
+          name="contact"
+          error={errors.contact?.message}
+        />
+
+        <Input
+          placeholder="Seu nome"
+          register={register}
+          name="course_module"
+          error={errors.course_module?.message}
+        />
+
         <button type="submit">Enviar</button>
       </Form>
     </LayoutContainer>

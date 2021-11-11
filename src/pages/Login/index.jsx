@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 import LayoutContainer from "../../components/LayoutContainer";
 
-const Login = () => {
+const Login = ({ user }) => {
   return (
     <LayoutContainer>
-      Login aaa
+      Login - {user.name}
       <Link to="/"> Ir para a home </Link>
     </LayoutContainer>
   );
