@@ -1,8 +1,14 @@
 import { Link, useHistory } from "react-router-dom";
 import LayoutContainer from "../../components/LayoutContainer";
 
-const Home = () => {
+import { Redirect } from "react-router-dom";
+
+const Home = ({ auth }) => {
   const history = useHistory();
+
+  if (auth) {
+    return <Redirect to="/dashboard" />;
+  }
 
   return (
     <LayoutContainer>

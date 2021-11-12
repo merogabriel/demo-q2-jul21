@@ -8,8 +8,11 @@ const Profile = () => {
   const { id } = useParams();
 
   useEffect(() => {
-    api.get(`/users/${id}`)
-      .then((response) => setUser(response.data));
+    /**
+     * fetch('').then(response => response.json())
+     */
+
+    api.get(`/users/${id}`).then((response) => setUser(response.data));
   }, []);
 
   return (

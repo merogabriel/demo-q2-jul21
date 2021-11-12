@@ -1,13 +1,9 @@
 import styled, { css } from "styled-components";
 
 export const Container = styled.div`
-  text-align: center;
-
-  div {
-    span {
-      font-size: 16px;
-      color: #ff3e41;
-    }
+  span {
+    color: #ff3e41;
+    font-size: 16px;
   }
 `;
 

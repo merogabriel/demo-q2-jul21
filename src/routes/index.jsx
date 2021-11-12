@@ -1,29 +1,40 @@
 import { Switch, Route } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 import Home from "../pages/Home";
 import Login from "../pages/Login";
 import Users from "../pages/Users";
 import Profile from "../pages/Profile";
 import Signup from "../pages/Signup";
-import { useState } from "react";
+import Dashboard from "../pages/Dashboard";
 
 const Routes = () => {
-  const [user, setUser] = useState({});
+  const [auth, setAuth] = useState(false);
 
-  console.log(user);
+  useEffect(() => {
+    const token = localStorage.getItem("@NomeDaAplicação:token");
+
+    if (token) {
+      return setAuth(true);
+    }
+  }, []);
 
   return (
     <Switch>
       <Route exact path="/">
-        <Home />
+        <Home auth={auth} />
       </Route>
 
       <Route path="/login">
-        <Login user={user} />
+        <Login auth={auth} setAuth={setAuth} />
       </Route>
 
       <Route path="/signup">
-        <Signup setUser={setUser} />
+        <Signup auth={auth} />
+      </Route>
+
+      <Route path="/dashboard">
+        <Dashboard auth={auth} setAuth={setAuth} />
       </Route>
 
       {/* Listagem de usuários */}
