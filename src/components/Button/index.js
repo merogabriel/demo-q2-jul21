@@ -5,7 +5,7 @@ function Button({ text }) {
   // Javascript (Lógica do nosso componente)
 
   return (
-    <button className="container">
+    <button className="confetainer">
       {/** JSX */}
       {text}
     </button>
